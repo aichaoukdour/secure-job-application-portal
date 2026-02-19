@@ -4,7 +4,6 @@ import type { NextRequest } from 'next/server';
 export function middleware(request: NextRequest) {
     const nonce = Buffer.from(crypto.randomUUID()).toString('base64');
 
-    // Content Security Policy (CSP)
     const cspHeader = `
     default-src 'self';
     script-src 'self' 'nonce-${nonce}' 'strict-dynamic' https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/;
@@ -25,29 +24,22 @@ export function middleware(request: NextRequest) {
     requestHeaders.set('Content-Security-Policy', cspHeader);
 
     const response = NextResponse.next({
-        request: {
-            headers: requestHeaders,
-        },
+        request: { headers: requestHeaders },
     });
 
-    response.headers.set('Content-Security-Policy', cspHeader);
-    response.headers.set('X-Frame-Options', 'DENY');
-    response.headers.set('X-Content-Type-Options', 'nosniff');
-    response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
-    response.headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocations=()');
+    ['Content-Security-Policy', 'X-Frame-Options', 'X-Content-Type-Options', 'Referrer-Policy', 'Permissions-Policy'].forEach(h => {
+        if (h === 'Content-Security-Policy') response.headers.set(h, cspHeader);
+        else if (h === 'X-Frame-Options') response.headers.set(h, 'DENY');
+        else if (h === 'X-Content-Type-Options') response.headers.set(h, 'nosniff');
+        else if (h === 'Referrer-Policy') response.headers.set(h, 'strict-origin-when-cross-origin');
+        else response.headers.set(h, 'camera=(), microphone=(), geolocations=()');
+    });
 
     return response;
 }
 
 export const config = {
     matcher: [
-        /*
-         * Match all request paths except for the ones starting with:
-         * - api (API routes)
-         * - _next/static (static files)
-         * - _next/image (image optimization files)
-         * - favicon.ico (favicon file)
-         */
         {
             source: '/((?!api|_next/static|_next/image|favicon.ico).*)',
             missing: [

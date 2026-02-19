@@ -11,7 +11,7 @@ export default function JobDescription() {
                     </div>
                 </div>
                 <div className="mt-4 md:mt-0">
-                    <span className="text-2xl font-bold text-gray-900">$60k - $90k</span>
+                    <span className="text-2xl font-bold text-gray-900 text-right">$60k - $90k</span>
                     <p className="text-xs text-gray-500 text-right">Per Year</p>
                 </div>
             </div>
@@ -41,11 +41,11 @@ export default function JobDescription() {
 
                 <div className="space-y-8">
                     <div className="bg-gray-50 rounded-xl p-6">
-                        <h3 className="text-sm font-bold text-gray-900 uppercase tracking-wider mb-4 text-center">Requirements</h3>
+                        <h3 className="text-sm font-bold text-gray-900 uppercase tracking-wider mb-4 text-center border-b pb-4">Requirements</h3>
                         <ul className="space-y-3">
                             {["TypeScript / Next.js", "Tailwind CSS", "Node.js / API Design", "PostgreSQL / Prisma", "5+ Years Experience"].map((item) => (
                                 <li key={item} className="flex items-center gap-2 text-sm text-gray-700">
-                                    <svg className="w-4 h-4 text-blue-500 fill-current" viewBox="0 0 20 20">
+                                    <svg className="w-4 h-4 text-blue-500 fill-current shrink-0" viewBox="0 0 20 20">
                                         <path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" />
                                     </svg>
                                     {item}
